@@ -6,9 +6,18 @@
 
 package sec_algo;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DirectColorModel;
+import java.awt.image.PixelGrabber;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import javax.imageio.ImageIO;
 
 /**
@@ -17,11 +26,16 @@ import javax.imageio.ImageIO;
  */
 public class img_proc {
     
+    private int[] RGB_MASKS;
+    private final ColorModel RGB_OPAQUE;
     private BufferedImage image;
 //    private File f;
     
     public img_proc(){
         this.image = null;
+        RGB_MASKS = new int[]{0xFF0000, 0xFF00, 0xFF};
+        RGB_OPAQUE = new DirectColorModel(32, RGB_MASKS[0],
+            RGB_MASKS[1], RGB_MASKS[2]);
 //        this.f = null;
     }
     
@@ -29,9 +43,17 @@ public class img_proc {
         try{
 //            f = new File(fileloc);
             BufferedImage temp = ImageIO.read(fileloc);
-            image = new BufferedImage(temp.getWidth(), temp.getHeight(),
-                BufferedImage.TYPE_INT_RGB);
-        } catch(IOException e){
+            Image img = Toolkit.getDefaultToolkit().createImage(fileloc.getAbsoluteFile().toString());
+            PixelGrabber pg = new PixelGrabber(img, 0, 0, -1, -1, true);
+            pg.grabPixels();
+            int width = pg.getWidth(), height = pg.getHeight();
+            DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), 
+                pg.getWidth() * pg.getHeight());
+            WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+//            image = new BufferedImage(temp.getWidth(), temp.getHeight(),
+//                BufferedImage.TYPE_INT_ARGB);
+            image = new BufferedImage(RGB_OPAQUE, raster, false, null);
+        } catch(Exception e){
             e.printStackTrace();
         }
     }
