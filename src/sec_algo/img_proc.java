@@ -30,7 +30,7 @@ public class img_proc {
 //            f = new File(fileloc);
             BufferedImage temp = ImageIO.read(fileloc);
             image = new BufferedImage(temp.getWidth(), temp.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
+                BufferedImage.TYPE_INT_RGB);
         } catch(IOException e){
             e.printStackTrace();
         }
