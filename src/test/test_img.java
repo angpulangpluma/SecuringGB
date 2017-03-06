@@ -8,6 +8,9 @@ package test;
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import sec_algo.img_proc;
 
 /**
  *
@@ -21,14 +24,27 @@ public class test_img {
     public static void main(String[] args) {
         // TODO code application logic here
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        JFrame imgenc = new JFrame("Image encryption module");
+        img_proc img = new img_proc();
         int returnValue = fileChooser.showOpenDialog(null);
-        
+        JOptionPane.showMessageDialog(imgenc, "Please choose an image file to open.");
         fileChooser.show();
         if (returnValue == JFileChooser.APPROVE_OPTION){
             File f = fileChooser.getSelectedFile();
 //            cryptmodule.setFile(selectedfile);
-            
-            System.out.println("Selected file for decryption: "+ f.getName());
+            img.setImage(f);
+            System.out.println("Selected file for decryption: "+ f.getAbsoluteFile());
+        }
+        
+        JOptionPane.showMessageDialog(imgenc, "Please enter filename to save file as");
+        returnValue = fileChooser.showOpenDialog(null);
+        fileChooser.show();
+        if (returnValue == JFileChooser.APPROVE_OPTION){
+            File f = fileChooser.getSelectedFile();
+//            cryptmodule.setFile(selectedfile);
+            img.createNewImage(f.getName());
+            System.out.println("Saved file: "+ f.getAbsoluteFile());
         }
     }
 }
