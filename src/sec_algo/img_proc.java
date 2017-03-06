@@ -46,5 +46,32 @@ public class img_proc {
         }
     }
     
+    public int getImageWidth(){
+        return this.image.getWidth();
+    }
+    
+    public int getImageHeight(){
+        return this.image.getHeight();
+    }
+    
+    public int getImagePixelVal(int x, int y){
+        return this.image.getRGB(x,y);
+    }
+    
+    public int getAOfImagePixel(int x, int y){
+        return (getImagePixelVal(x,y)>>24) & 0xff;
+    }
+    
+    public int getROfImagePixel(int x, int y){
+        return (getImagePixelVal(x,y)>>16) & 0xff;
+    }
+    
+    public int getGOfImagePixel(int x, int y){
+        return (getImagePixelVal(x,y)>>8) & 0xff;
+    }
+    
+    public int getBOfImagePixel(int x, int y){
+        return getImagePixelVal(x,y) & 0xff;
+    }
     
 }
