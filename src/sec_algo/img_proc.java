@@ -46,6 +46,10 @@ public class img_proc {
         }
     }
     
+    public BufferedImage getImage(){
+        return this.image;
+    }
+    
     public int getImageWidth(){
         return this.image.getWidth();
     }

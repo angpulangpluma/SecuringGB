@@ -37,6 +37,18 @@ public class test_img {
             System.out.println("Selected file for decryption: "+ f.getAbsoluteFile());
         }
         
+        
+        //setting pixel value
+        
+        int a = 255;
+        int r = 100;
+        int g = 150;
+        int b = 200;
+        
+        int p = (a<<24) | (r<<16) | (g<<8) | b;
+        //img.setRGB(x, y, pixel)
+        img.getImage().setRGB(0, 0, p);
+        
         JOptionPane.showMessageDialog(imgenc, "Please enter filename to save file as");
         returnValue = fileChooser.showOpenDialog(null);
         fileChooser.show();
