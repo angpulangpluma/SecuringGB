@@ -62,6 +62,19 @@ public class img_proc {
         return this.image.getRGB(x,y);
     }
     
+    public int[][] getImageInPixels(){
+        int w = getImageWidth();
+        int h = getImageHeight();
+        int[][] result = new int[h][w];
+        
+        for(int row=0; row < h; row++){
+            for (int col=0; col < w; col++){
+                result[row][col] = image.getRGB(col,row);
+            }
+        }
+        return result;
+    }
+    
     public int getAOfImagePixel(int x, int y){
         return (getImagePixelVal(x,y)>>24) & 0xff;
     }
