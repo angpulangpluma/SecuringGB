@@ -149,7 +149,7 @@ public class file_interface extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(decryptTime)
                     .addComponent(encryptTime))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
             .addComponent(jSeparator1)
         );
 
@@ -197,9 +197,9 @@ public class file_interface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please select a file to encrypt first.");
         else{
             cryptmodule.encryptFile();
-            cryptmodule.setFile(null);
-            selectedfile = null;
-            encryptTime.setText(Long.toString(cryptmodule.getEncryptedTime()));
+//            cryptmodule.setFile(null);
+//            selectedfile = null;
+            encryptTime.setText("Time to encrypt: " + Long.toString(cryptmodule.getEncryptedTime()));
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -209,9 +209,9 @@ public class file_interface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please select a file to decrypt first.");
         else{
             cryptmodule.decryptFile();
-            cryptmodule.setFile(null);
-            selectedfile = null;
-            decryptTime.setText(Long.toString(cryptmodule.getDecryptedTime()));
+//            cryptmodule.setFile(null);
+//            selectedfile = null;
+            decryptTime.setText("Time to decrypt: " + Long.toString(cryptmodule.getDecryptedTime()));
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
