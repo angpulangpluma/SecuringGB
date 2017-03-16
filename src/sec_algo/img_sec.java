@@ -7,16 +7,27 @@
 package sec_algo;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.security.AlgorithmParameters;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
+import sun.misc.IOUtils;
 
 /**
  *
@@ -26,6 +37,7 @@ public class img_sec {
     
     private File file;
     private byte[] key;
+    private byte[] iv;
     private SecretKeySpec secretkey;
     private long encryptTime;
     private long decryptTime;
@@ -34,6 +46,7 @@ public class img_sec {
         file = null;
         encryptTime = 0;
         decryptTime = 0;
+        iv = null;
     }
     
     public void setFile(File file){
@@ -42,32 +55,30 @@ public class img_sec {
     
     public void encryptFile(){
         File encrypted = new File(returnFileName()+"_encrypted."+returnFileExt());
-        int totalBytesRead = 0;
-        byte[] result = new byte[(int)file.length()];
-        byte[] temp = new byte[(int)file.length()];
+        byte[] temp, result;
         try{
-            FileInputStream inputStream = new FileInputStream(file);
-            BufferedOutputStream outputStream = 
-                new BufferedOutputStream(new FileOutputStream(returnFileName()+"_encrypted."+returnFileExt()));
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, secretkey);
-            while(totalBytesRead < result.length){
-                int bytesRemaining = result.length - totalBytesRead;
-                int bytesRead = inputStream.read(temp, totalBytesRead, bytesRemaining);
-                if (bytesRead > 0)
-                    totalBytesRead = totalBytesRead + bytesRead;
-            }
-            byte[] encoded = Base64.encodeBase64(temp);
+            FileInputStream in = new FileInputStream(file);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, secretkey);
+            iv = cipher.getIV();
+            CipherOutputStream os = new CipherOutputStream(new FileOutputStream(encrypted),
+                cipher);
+//            while(totalBytesRead < result.length){
+//                int bytesRemaining = result.length - totalBytesRead;
+//                int bytesRead = inputStream.read(temp, totalBytesRead, bytesRemaining);
+//                if (bytesRead > 0)
+//                    totalBytesRead = totalBytesRead + bytesRead;
+//            }
+//            byte[] encoded = Base64.encodeBase64(temp);
             long startTime = System.currentTimeMillis();
             //encrypt
-            result = cipher.doFinal(encoded);
+//            result = cipher.doFinal(encoded);
+            copy(in, os);
             long endTime = System.currentTimeMillis();
             encryptTime = endTime - startTime;
-            //write
-            outputStream.write(result);
-            inputStream.close();
-            outputStream.close();
-//            System.out.println("Read " + total + " bytes");
+
+            in.close();
+            os.close();
         } catch(Exception ex){
             ex.printStackTrace();
         }
@@ -75,33 +86,23 @@ public class img_sec {
     
     public void decryptFile(){
         File decrypted = new File(returnFileName()+"_decrypted."+returnFileExt());
-        int totalBytesRead = 0;
-        byte[] result = new byte[(int)file.length()];
-        byte[] temp = new byte[(int)file.length()];
         try{
-            FileInputStream inputStream = new FileInputStream(file);
-            BufferedOutputStream outputStream = 
-                new BufferedOutputStream(new FileOutputStream(returnFileName()+"_encrypted."+returnFileExt()));
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, secretkey);
-            while(totalBytesRead < result.length){
-                int bytesRemaining = result.length - totalBytesRead;
-                int bytesRead = inputStream.read(temp, totalBytesRead, bytesRemaining);
-                if (bytesRead > 0)
-                    totalBytesRead = totalBytesRead + bytesRead;
-            }
-            byte[] encoded = Base64.encodeBase64(temp);
+            FileOutputStream os = new FileOutputStream(decrypted);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+//            AlgorithmParameters.getInstance("AES");
+            if (iv!=null)
+                cipher.init(Cipher.DECRYPT_MODE, secretkey, new IvParameterSpec(iv));
+            else cipher.init(Cipher.DECRYPT_MODE, secretkey);
+            CipherInputStream is = new CipherInputStream(new FileInputStream(file),
+                cipher);
+
             long startTime = System.currentTimeMillis();
-            //encrypt
-//            result = new Base64().decode(cipher.doFinal(temp));
-            result = cipher.doFinal(encoded);
+            copy(is, os);
             long endTime = System.currentTimeMillis();
             decryptTime = endTime - startTime;
-            //write
-            outputStream.write(result);
-            inputStream.close();
-            outputStream.close();
-//            System.out.println("Read " + total + " bytes");
+            
+            is.close();
+            os.close();
         } catch(Exception ex){
             ex.printStackTrace();
         }
@@ -151,5 +152,17 @@ public class img_sec {
             e.printStackTrace();
         }
     }
+    
+    private void copy(InputStream is, OutputStream os){
+        int i;
+        byte[] b = new byte[1024];
+        try{
+            while((i=is.read(b))!=-1) {
+                os.write(b, 0, i);
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+	}
 
 }
