@@ -6,18 +6,16 @@
 
 package sec_algo;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
 import java.security.AlgorithmParameters;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -26,8 +24,6 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import org.apache.commons.codec.binary.Base64;
-import sun.misc.IOUtils;
 
 /**
  *
@@ -63,16 +59,8 @@ public class img_sec {
             iv = cipher.getIV();
             CipherOutputStream os = new CipherOutputStream(new FileOutputStream(encrypted),
                 cipher);
-//            while(totalBytesRead < result.length){
-//                int bytesRemaining = result.length - totalBytesRead;
-//                int bytesRead = inputStream.read(temp, totalBytesRead, bytesRemaining);
-//                if (bytesRead > 0)
-//                    totalBytesRead = totalBytesRead + bytesRead;
-//            }
-//            byte[] encoded = Base64.encodeBase64(temp);
+
             long startTime = System.currentTimeMillis();
-            //encrypt
-//            result = cipher.doFinal(encoded);
             copy(in, os);
             long endTime = System.currentTimeMillis();
             encryptTime = endTime - startTime;
@@ -89,7 +77,7 @@ public class img_sec {
         try{
             FileOutputStream os = new FileOutputStream(decrypted);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-//            AlgorithmParameters.getInstance("AES");
+            AlgorithmParameters.getInstance("AES");
             if (iv!=null)
                 cipher.init(Cipher.DECRYPT_MODE, secretkey, new IvParameterSpec(iv));
             else cipher.init(Cipher.DECRYPT_MODE, secretkey);
@@ -163,6 +151,6 @@ public class img_sec {
         }catch(IOException e){
             e.printStackTrace();
         }
-	}
+    }
 
 }
