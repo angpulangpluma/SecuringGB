@@ -33,7 +33,6 @@ public class img_sec {
     
     private File file;
     private byte[] key;
-    private byte[] iv;
     private SecretKeySpec secretkey;
     private long encryptTime;
     private long decryptTime;
@@ -42,7 +41,6 @@ public class img_sec {
         file = null;
         encryptTime = 0;
         decryptTime = 0;
-        iv = null;
     }
     
     public void setFile(File file){
@@ -55,8 +53,9 @@ public class img_sec {
         try{
             FileInputStream in = new FileInputStream(file);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, secretkey);
-            iv = cipher.getIV();
+            byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            IvParameterSpec ivspec = new IvParameterSpec(iv);
+            cipher.init(Cipher.ENCRYPT_MODE, secretkey, ivspec);
             CipherOutputStream os = new CipherOutputStream(new FileOutputStream(encrypted),
                 cipher);
 
@@ -78,9 +77,11 @@ public class img_sec {
             FileOutputStream os = new FileOutputStream(decrypted);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             AlgorithmParameters.getInstance("AES");
-            if (iv!=null)
-                cipher.init(Cipher.DECRYPT_MODE, secretkey, new IvParameterSpec(iv));
-            else cipher.init(Cipher.DECRYPT_MODE, secretkey);
+//            if (iv!=null)
+             byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            IvParameterSpec ivspec = new IvParameterSpec(iv);
+                cipher.init(Cipher.DECRYPT_MODE, secretkey, ivspec);
+//            else cipher.init(Cipher.DECRYPT_MODE, secretkey);
             CipherInputStream is = new CipherInputStream(new FileInputStream(file),
                 cipher);
 
