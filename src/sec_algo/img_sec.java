@@ -47,8 +47,12 @@ public class img_sec {
         this.file = file;
     }
     
+    /*
+    Implementation for encryptFile() from www.macs.hw.ac.uk/~ml355/lore/FileEncryption.java
+    */
+    
     public void encryptFile(){
-        File encrypted = new File(returnFileName()+"_encrypted."+returnFileExt());
+        File encrypted = new File("encrypted_test_files\\" + returnFileName()+"_encrypted."+returnFileExt());
         byte[] temp, result;
         try{
             FileInputStream in = new FileInputStream(file);
@@ -71,8 +75,12 @@ public class img_sec {
         }
     }
     
+    /*
+    Implementation for decryptFile() from www.macs.hw.ac.uk/~ml355/lore/FileEncryption.java
+    */
+    
     public void decryptFile(){
-        File decrypted = new File(returnFileName()+"_decrypted."+returnFileExt());
+        File decrypted = new File("decrypted_test_files\\" + returnFileName()+"_decrypted."+returnFileExt());
         try{
             FileOutputStream os = new FileOutputStream(decrypted);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
@@ -141,6 +149,10 @@ public class img_sec {
             e.printStackTrace();
         }
     }
+    
+    /*
+    Implementation for copy() from www.macs.hw.ac.uk/~ml355/lore/FileEncryption.java
+    */
     
     private void copy(InputStream is, OutputStream os){
         int i;

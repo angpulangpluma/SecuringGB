@@ -196,7 +196,7 @@ public class file_interface extends javax.swing.JFrame {
             cryptmodule.encryptFile();
 //            cryptmodule.setFile(null);
 //            selectedfile = null;
-            encryptTime.setText("Time to encrypt: " + Long.toString(cryptmodule.getEncryptedTime()));
+            encryptTime.setText("Time to encrypt: " + Long.toString(cryptmodule.getEncryptedTime()/(long)(1000.0)));
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -208,7 +208,7 @@ public class file_interface extends javax.swing.JFrame {
             cryptmodule.decryptFile();
 //            cryptmodule.setFile(null);
 //            selectedfile = null;
-            decryptTime.setText("Time to decrypt: " + Long.toString(cryptmodule.getDecryptedTime()));
+            decryptTime.setText("Time to decrypt: " + Long.toString(cryptmodule.getDecryptedTime()/(long)(1000.0)));
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

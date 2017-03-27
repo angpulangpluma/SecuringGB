@@ -29,11 +29,13 @@ public class aes {
         MessageDigest sha = null;
         try{
 //            key = myKey.getBytes("UTF-8");
-            String temp = s1 + myKey + s2;
-            key = temp.getBytes("UTF-8");
+//            String temp = s1 + myKey + s2;
+            key = myKey.getBytes("UTF-8");
             System.out.println("old key length: " + key.length);
             sha = MessageDigest.getInstance("SHA-256");
             key = sha.digest(key);
+            String temp = s1 + new String(key, "UTF-8") + s2;
+            key = sha.digest(temp.getBytes("UTF-8"));
             key = Arrays.copyOf(key, 16);
             System.out.println("new key length: " + key.length);
             System.out.println("key: " + new String(key, "UTF-8"));
@@ -49,6 +51,8 @@ public class aes {
         String decrypted = "";
         try{
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+//            byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//            IvParameterSpec ivspec = new IvParameterSpec(iv);
             cipher.init(Cipher.DECRYPT_MODE, secretkey);
             decrypted = new String(cipher.doFinal(Base64.decodeBase64(str)));
         }catch(Exception e){
@@ -61,12 +65,29 @@ public class aes {
         String encrypted = "";
         try{
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+//            byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//            IvParameterSpec ivspec = new IvParameterSpec(iv);
             cipher.init(Cipher.ENCRYPT_MODE, secretkey);
             encrypted = Base64.encodeBase64String(cipher.doFinal(str.getBytes("UTF-8")));
         }catch(Exception e){
             e.printStackTrace();
         }
         return encrypted;
+    }
+    
+    public String getHashedString(String word){
+        String result = "";
+        byte[] hashed;
+        MessageDigest digest;
+        try{
+            digest = MessageDigest.getInstance("SHA-256");
+            hashed = digest.digest(word.getBytes("UTF-8"));    
+            result = new String(hashed, "UTF-8");
+        } catch(Exception e){
+            e.printStackTrace();
+            result = "";
+        }
+        return result;
     }
         
     /* 
