@@ -5,7 +5,9 @@
  */
 package sec_algo;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -21,12 +23,24 @@ public class file_interface extends javax.swing.JFrame {
     
     private File selectedfile;
     private final img_sec cryptmodule;
+    private FileWriter fw;
+    private BufferedWriter bw;
     
     public file_interface() {
         initComponents();
         selectedfile = null;
         cryptmodule = new img_sec();
         cryptmodule.setKey("thisisthekey", "saltsaltsalt", "saltsaltsalt");
+        try{
+            fw = new FileWriter("test_log.txt",true);
+            bw = new BufferedWriter(fw);
+            bw.write("---------");
+            bw.newLine();
+            bw.write("encrypting file");  
+            bw.newLine();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
     
 
@@ -51,6 +65,11 @@ public class file_interface extends javax.swing.JFrame {
         decryptTime = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -174,6 +193,13 @@ public class file_interface extends javax.swing.JFrame {
             selectedfile = fileChooser.getSelectedFile();
             cryptmodule.setFile(selectedfile);
             System.out.println("Selected file for encryption: "+ selectedfile.getName());
+            try{
+                bw.newLine();
+                bw.write("Selected file for encryption: "+ selectedfile.getName());
+                bw.newLine();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -185,6 +211,13 @@ public class file_interface extends javax.swing.JFrame {
             selectedfile = fileChooser.getSelectedFile();
             cryptmodule.setFile(selectedfile);
             System.out.println("Selected file for decryption: "+ selectedfile.getName());
+            try{
+                bw.newLine();
+                bw.write("Selected file for decryption: "+ selectedfile.getName());
+                bw.newLine();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -196,7 +229,14 @@ public class file_interface extends javax.swing.JFrame {
             cryptmodule.encryptFile();
 //            cryptmodule.setFile(null);
 //            selectedfile = null;
-            encryptTime.setText("Time to encrypt: " + Long.toString(cryptmodule.getEncryptedTime()/(long)(1000.0)));
+            encryptTime.setText("Time to encrypt: " + Long.toString(cryptmodule.getEncryptedTime()));
+            try{
+                bw.newLine();
+                bw.write("Time to encrypt: " + Long.toString(cryptmodule.getEncryptedTime()));
+                bw.newLine();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -208,9 +248,28 @@ public class file_interface extends javax.swing.JFrame {
             cryptmodule.decryptFile();
 //            cryptmodule.setFile(null);
 //            selectedfile = null;
-            decryptTime.setText("Time to decrypt: " + Long.toString(cryptmodule.getDecryptedTime()/(long)(1000.0)));
+            decryptTime.setText("Time to decrypt: " + Long.toString(cryptmodule.getDecryptedTime()));
+            try{
+                bw.newLine();
+                bw.write("Time to decrypt: " + Long.toString(cryptmodule.getDecryptedTime()));
+                bw.newLine();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        try{
+            if(bw!=null)
+                bw.close();
+            if(fw!=null)
+                fw.close();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_formWindowClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -66,6 +66,8 @@ public class img_sec {
             long startTime = System.currentTimeMillis();
             copy(in, os);
             long endTime = System.currentTimeMillis();
+            System.out.println("startTime - " + startTime);
+            System.out.println("endTime - " + endTime);
             encryptTime = endTime - startTime;
 
             in.close();
@@ -96,6 +98,8 @@ public class img_sec {
             long startTime = System.currentTimeMillis();
             copy(is, os);
             long endTime = System.currentTimeMillis();
+            System.out.println("startTime - " + startTime);
+            System.out.println("endTime - " + endTime);
             decryptTime = endTime - startTime;
             
             is.close();
@@ -134,11 +138,12 @@ public class img_sec {
         MessageDigest sha = null;
         try{
 //            key = myKey.getBytes("UTF-8");
-            String temp = s1 + myKey + s2;
-            key = temp.getBytes("UTF-8");
+           key = myKey.getBytes("UTF-8");
             System.out.println("old key length: " + key.length);
             sha = MessageDigest.getInstance("SHA-256");
             key = sha.digest(key);
+            String temp = s1 + new String(key, "UTF-8") + s2;
+            key = sha.digest(temp.getBytes("UTF-8"));
             key = Arrays.copyOf(key, 16);
             System.out.println("new key length: " + key.length);
             System.out.println("key: " + new String(key, "UTF-8"));
