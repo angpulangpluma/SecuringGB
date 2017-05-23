@@ -34,8 +34,8 @@ public class aes {
             System.out.println("old key length: " + key.length);
             sha = MessageDigest.getInstance("SHA-256");
             key = sha.digest(key);
-            String temp = s1 + new String(key, "UTF-8") + s2;
-            key = sha.digest(temp.getBytes("UTF-8"));
+//            String temp = s1 + new String(key, "UTF-8") + s2;
+//            key = sha.digest(temp.getBytes("UTF-8"));
             key = Arrays.copyOf(key, 16);
             System.out.println("new key length: " + key.length);
             System.out.println("key: " + new String(key, "UTF-8"));

@@ -52,7 +52,7 @@ public class img_sec {
     */
     
     public void encryptFile(){
-        File encrypted = new File("encrypted_test_files\\" + returnFileName()+"_encrypted."+returnFileExt());
+        File encrypted = new File("demo2\\" + returnFileName()+"_encrypted."+returnFileExt());
         byte[] temp, result;
         try{
             FileInputStream in = new FileInputStream(file);
@@ -82,7 +82,7 @@ public class img_sec {
     */
     
     public void decryptFile(){
-        File decrypted = new File("decrypted_test_files\\" + returnFileName()+"_decrypted."+returnFileExt());
+        File decrypted = new File("demo2de\\" + returnFileName()+"_decrypted."+returnFileExt());
         try{
             FileOutputStream os = new FileOutputStream(decrypted);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
