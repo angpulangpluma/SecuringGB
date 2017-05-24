@@ -19,6 +19,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -184,12 +186,12 @@ public class commonenc {
         byte[] temp, result;
         try{
             FileInputStream in = new FileInputStream(file);
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-            IvParameterSpec ivspec = new IvParameterSpec(iv);
-            cipher.init(Cipher.ENCRYPT_MODE, secretkey, ivspec);
+//            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+//            byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//            IvParameterSpec ivspec = new IvParameterSpec(iv);
+            aesCipher.init(Cipher.ENCRYPT_MODE, secretkey);
             CipherOutputStream os = new CipherOutputStream(new FileOutputStream(encrypted),
-                cipher);
+                aesCipher);
 
             long startTime = System.currentTimeMillis();
             copy(in, os);
@@ -213,15 +215,15 @@ public class commonenc {
         File decrypted = new File("demo2de\\" + returnFileName()+"_decrypted."+returnFileExt());
         try{
             FileOutputStream os = new FileOutputStream(decrypted);
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            AlgorithmParameters.getInstance("AES");
-//            if (iv!=null)
-             byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-            IvParameterSpec ivspec = new IvParameterSpec(iv);
-                cipher.init(Cipher.DECRYPT_MODE, secretkey, ivspec);
+//            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+//            AlgorithmParameters.getInstance("AES");
+////            if (iv!=null)
+//             byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//            IvParameterSpec ivspec = new IvParameterSpec(iv);
+            aesCipher.init(Cipher.DECRYPT_MODE, secretkey);
 //            else cipher.init(Cipher.DECRYPT_MODE, secretkey);
             CipherInputStream is = new CipherInputStream(new FileInputStream(file),
-                cipher);
+                aesCipher);
 
             long startTime = System.currentTimeMillis();
             copy(is, os);

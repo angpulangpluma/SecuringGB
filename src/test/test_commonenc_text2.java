@@ -40,12 +40,12 @@ public class test_commonenc_text2 {
         Scanner reader = new Scanner(System.in);
         System.out.println("Enter text to encrypt: ");
         String toEncrypt = reader.nextLine();
-        System.out.println("Enter encryption key: ");
-        String key = reader.nextLine();
-        System.out.println("Enter first salt: ");
-        String s1 = reader.nextLine();
-        System.out.println("Enter second salt: ");
-        String s2 = reader.nextLine();
+//        System.out.println("Enter encryption key: ");
+//        String key = reader.nextLine();
+//        System.out.println("Enter first salt: ");
+//        String s1 = reader.nextLine();
+//        System.out.println("Enter second salt: ");
+//        String s2 = reader.nextLine();
         
 //        aes endemodule = new aes();
 //        endemodule.setKey(key, s1, s2);
