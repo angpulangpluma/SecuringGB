@@ -3,7 +3,7 @@
  * To set this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package matrixop;
+package matrixpack;
 
 /*
 * Created on: 11-17-2015
@@ -12,13 +12,13 @@ package matrixop;
 * Authors: Marienne Lopez & Arces Talavera
 */
 
-class matrix{
-    private float[][] m;
+public class matrix{
+    private int[][] m;
     private int row, col;
     
     //set matrix
-    public matrix(float[][] a, int row, int col){
-        m = a;
+    public matrix(int[][] a, int row, int col){
+        this.m = a;
         this.row = row;
         this.col = col;
     }
@@ -44,7 +44,7 @@ class matrix{
     }
     
     public void defineMatrix(){
-        m = new float[row][col];
+        m = new int[row][col];
     }
     
 //    //check if matrix is square
@@ -55,27 +55,27 @@ class matrix{
 //        get accept;
 //    }
     
-    public float[][] getMatrix(){
+    public int[][] getMatrix(){
         return this.m;
     }
     
-    public void setValue(int row, int col, float value){
+    public void setValue(int row, int col, int value){
         m[row][col] = value;
 //        System.out.println("Value entered - " + m[row][col]);
     }
     
-    public float getValue(int row, int col){
+    public int getValue(int row, int col){
         return m[row][col];
     }
     
-    public float[] getMatrixRow(int row){
+    public int[] getMatrixRow(int row){
         return m[row];
     }
     public void displayMatrix(){
         for(int i=0; i<getRow(); i++){
             System.out.printf("[");
             for(int j=0; j<getCol(); j++){
-                System.out.printf("%5.2f ", m[i][j]);
+                System.out.printf("%d ", m[i][j]);
             }
             System.out.printf("]\n");
         }

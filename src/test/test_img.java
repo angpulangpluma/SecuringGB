@@ -34,7 +34,7 @@ public class test_img {
             File f = fileChooser.getSelectedFile();
 //            cryptmodule.setFile(selectedfile);
             img.setImage(f);
-            System.out.println("Selected file for decryption: "+ f.getAbsoluteFile());
+            System.out.println("Selected file "+ f.getAbsoluteFile());
         }
         
         
@@ -77,6 +77,11 @@ public class test_img {
             img.createNewImage(f.getName());
 //            System.out.println("Saved file: "+ f.getAbsoluteFile());
         }
+        
+        img.firstPixScram();
+        img.secondPixScram();
+        img.firstPixUnscram();
+        img.secondPixUnscram();
     }
 }
 

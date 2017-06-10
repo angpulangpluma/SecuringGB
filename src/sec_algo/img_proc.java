@@ -19,6 +19,7 @@ import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import javax.imageio.ImageIO;
+import matrixpack.*;
 
 /**
  *
@@ -29,7 +30,7 @@ public class img_proc {
     private int[] RGB_MASKS;
     private final ColorModel RGB_OPAQUE;
     private BufferedImage image;
-//    private File f;
+    private File f;
     
     public img_proc(){
         this.image = null;
@@ -41,7 +42,7 @@ public class img_proc {
     
     public void setImage(File fileloc){
         try{
-//            f = new File(fileloc);
+            this.f = fileloc;
             BufferedImage temp = ImageIO.read(fileloc);
             Image img = Toolkit.getDefaultToolkit().createImage(fileloc.getAbsoluteFile().toString());
             PixelGrabber pg = new PixelGrabber(img, 0, 0, -1, -1, true);
@@ -112,5 +113,238 @@ public class img_proc {
     public int getBOfImagePixel(int x, int y){
         return getImagePixelVal(x,y) & 0xff;
     }
+    
+    /*
+    based on first encryption algorithm from "Research on Colour Image
+        Efficiency" by Jing-Yu Peng
+    */
+    public BufferedImage firstPixScram(){
+        BufferedImage imgscram = null;
+        int[][] pix = getImageInPixels();
+        try{
+            Image temp = Toolkit.getDefaultToolkit().createImage(f.getAbsoluteFile().toString());
+            PixelGrabber pg = new PixelGrabber(temp, 0, 0, -1, -1, true);
+            pg.grabPixels();
+            int width = pg.getWidth(), height = pg.getHeight();
+            DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), 
+                pg.getWidth() * pg.getHeight());
+            WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+            imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
+            
+            //setting basis matrix
+            matrix a1 = new matrix();
+            a1.setRow(2);
+            a1.setCol(2);
+            a1.defineMatrix();
+            
+            a1.setValue(0, 0, 1);
+            a1.setValue(0, 1, 1);
+            a1.setValue(1, 0, 1);
+            a1.setValue(1, 1, 2);
+            
+            System.out.println("\n Basis matrix for first encryption algorithm:");
+            a1.displayMatrix();
+                
+            //encrypt img here
+            
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+            
+            return imgscram;
+    }
+    
+    /*
+    based on first encryption algorithm from "Research on Colour Image
+        Efficiency" by Jing-Yu Peng
+    */
+    public BufferedImage secondPixScram(){
+        BufferedImage imgscram = null;
+        int[][] pix = getImageInPixels();
+        try{
+            Image temp = Toolkit.getDefaultToolkit().createImage(f.getAbsoluteFile().toString());
+            PixelGrabber pg = new PixelGrabber(temp, 0, 0, -1, -1, true);
+            pg.grabPixels();
+            int width = pg.getWidth(), height = pg.getHeight();
+            DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), 
+                pg.getWidth() * pg.getHeight());
+            WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+            imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
+            
+            //setting basis matrix
+            matrix a2 = new matrix();
+            a2.setRow(3);
+            a2.setCol(3);
+            a2.defineMatrix();
+            
+            a2.setValue(0, 0, 1);
+            a2.setValue(0, 1, 1);
+            a2.setValue(0, 2, 1);
+            a2.setValue(1, 0, 1);
+            a2.setValue(1, 1, 2);
+            a2.setValue(1, 2, 2);
+            a2.setValue(2, 0, 1);
+            a2.setValue(2, 1, 2);
+            a2.setValue(2, 2, 3);
+            
+            System.out.println("\n Basis matrix for second encryption algorithm:");
+            a2.displayMatrix();
+            
+            //encrypt img here
+            //don't forget to do mod 256 after each pixel processed; limited values 0 to 255
+                
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+            
+            return imgscram;
+    }
+    
+    /*
+    based on first encryption algorithm from "Research on Colour Image
+        Efficiency" by Jing-Yu Peng
+    */
+    public BufferedImage firstPixUnscram(){
+        BufferedImage imgscram = null;
+        int[][] pix = getImageInPixels();
+        try{
+            Image temp = Toolkit.getDefaultToolkit().createImage(f.getAbsoluteFile().toString());
+            PixelGrabber pg = new PixelGrabber(temp, 0, 0, -1, -1, true);
+            pg.grabPixels();
+            int width = pg.getWidth(), height = pg.getHeight();
+            DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), 
+                pg.getWidth() * pg.getHeight());
+            WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+            imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
+            
+            //setting basis matrix
+            matrix a1 = new matrix();
+            a1.setRow(2);
+            a1.setCol(2);
+            a1.defineMatrix();
+            
+            a1.setValue(0, 0, 2);
+            a1.setValue(0, 1, -1);
+            a1.setValue(1, 0, -1);
+            a1.setValue(1, 1, 1);
+            
+            System.out.println("\n Basis matrix for first decryption algorithm:");
+            a1.displayMatrix();
+                
+            //encrypt img here
+            
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+            
+            return imgscram;
+    }
+    
+    /*
+    based on first encryption algorithm from "Research on Colour Image
+        Efficiency" by Jing-Yu Peng
+    */
+    public BufferedImage secondPixUnscram(){
+        BufferedImage imgscram = null;
+        int[][] pix = getImageInPixels();
+        try{
+            Image temp = Toolkit.getDefaultToolkit().createImage(f.getAbsoluteFile().toString());
+            PixelGrabber pg = new PixelGrabber(temp, 0, 0, -1, -1, true);
+            pg.grabPixels();
+            int width = pg.getWidth(), height = pg.getHeight();
+            DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), 
+                pg.getWidth() * pg.getHeight());
+            WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+            imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
+            
+            //setting basis matrix
+            matrix a2 = new matrix();
+            a2.setRow(3);
+            a2.setCol(3);
+            a2.defineMatrix();
+            
+            a2.setValue(0, 0, 2);
+            a2.setValue(0, 1, -1);
+            a2.setValue(0, 2, 0);
+            a2.setValue(1, 0, -1);
+            a2.setValue(1, 1, 2);
+            a2.setValue(1, 2, -1);
+            a2.setValue(2, 0, 0);
+            a2.setValue(2, 1, -1);
+            a2.setValue(2, 2, 1);
+            
+            System.out.println("\n Basis matrix for second encryption algorithm:");
+            a2.displayMatrix();
+            
+            //encrypt img here
+            //don't forget to do mod 256 after each pixel processed; limited values 0 to 255
+            // r' = |2r-g| mod 256
+            // g' = |-r+2g-b| mod 256
+            // b' = |b-g| mod 256
+                
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+            
+            return imgscram;
+    }
+    
+    /*
+    based on first encryption algorithm from "Research on Colour Image
+        Efficiency" by Jing-Yu Peng
+    */
+    public BufferedImage finalImgEnc(){
+        BufferedImage imgscram = null;
+        int[][] pix = getImageInPixels();
+        try{
+            Image temp = Toolkit.getDefaultToolkit().createImage(f.getAbsoluteFile().toString());
+            PixelGrabber pg = new PixelGrabber(temp, 0, 0, -1, -1, true);
+            pg.grabPixels();
+            int width = pg.getWidth(), height = pg.getHeight();
+            DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), 
+                pg.getWidth() * pg.getHeight());
+            WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+            imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
+            
+            //call firstPixScram() T times
+            //call secondPixScram() T times 
+            System.out.println("Image encrypted!");
+                
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+            
+            return imgscram;
+    }
+    
+    /*
+    based on first encryption algorithm from "Research on Colour Image
+        Efficiency" by Jing-Yu Peng
+    */
+    public BufferedImage finalImgDec(){
+        BufferedImage imgscram = null;
+        int[][] pix = getImageInPixels();
+        try{
+            Image temp = Toolkit.getDefaultToolkit().createImage(f.getAbsoluteFile().toString());
+            PixelGrabber pg = new PixelGrabber(temp, 0, 0, -1, -1, true);
+            pg.grabPixels();
+            int width = pg.getWidth(), height = pg.getHeight();
+            DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), 
+                pg.getWidth() * pg.getHeight());
+            WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+            imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
+            
+            //call firstPixUnscram() T times
+            //call secondPixUnscram() T times 
+            System.out.println("Image decrypted!");
+                
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+            
+            return imgscram;
+    }
+    
+    
     
 }
