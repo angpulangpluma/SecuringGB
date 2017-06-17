@@ -18,6 +18,8 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import javax.imageio.ImageIO;
 import matrixpack.*;
 
@@ -118,7 +120,8 @@ public class img_proc {
     based on first encryption algorithm from "Research on Colour Image
         Efficiency" by Jing-Yu Peng
     */
-    public BufferedImage firstPixScram(){
+    public BufferedImage firstPixScram(FileWriter fw){
+//        BufferedWriter bw = new BufferedWriter(fw);
         BufferedImage imgscram = null;
         int[][] pix = getImageInPixels();
         try{
@@ -130,7 +133,9 @@ public class img_proc {
                 pg.getWidth() * pg.getHeight());
             WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
             imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
-            
+        } catch (Exception e){
+            e.printStackTrace();
+        }
             //setting basis matrix
             matrix a1 = new matrix();
             a1.setRow(2);
@@ -146,12 +151,96 @@ public class img_proc {
             a1.displayMatrix();
                 
             //encrypt img here
+            int w = getImageWidth();
+            int h = getImageHeight();
+            int[][] imgpix = getImageInPixels();
+            matrix selpix = new matrix();
+            selpix.setRow(2);
+            selpix.setCol(1);
+            selpix.defineMatrix();
+            matrixop mop = new matrixop();
+            int a, r, g, b;
             
+//            try{
+//                bw.write("First image encryption algorithm");
+//                bw.newLine();
+//                bw.write("a1:");
+//                bw.newLine();
+//                writeMatrix(bw, a1);
+//                bw.newLine();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
+            
+            for(int row=0; row<w; row++){
+                for(int col=0; col<h; col++){
+                    selpix.setValue(0, 0, col);
+                    selpix.setValue(1, 0, row);
+                    mop.setFirstMatrix(a1);
+                    mop.setSecondMatrix(selpix);
+//                    try{
+//                        bw.write("step " + w);
+//                        bw.write("before encryption:");
+//                        bw.newLine();
+//                        bw.write("a1:");
+//                        bw.newLine();
+//                        writeMatrix(bw, a1);
+//                        bw.write("selected pixel");
+//                        bw.newLine();
+//                        writeMatrix(bw, selpix);
+//                        bw.newLine();
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+                    matrix swap = mop.multiplyMatrix(w);
+                    swap.displayMatrix();
+                    
+//                    try{
+////                        bw.write("step " + w);
+//                    bw.write("after encryption:");
+//                    bw.newLine();
+//                    bw.write("a1:");
+//                    bw.newLine();
+//                    writeMatrix(bw, a1);
+//                    bw.write("swap");
+//                    bw.newLine();
+//                    writeMatrix(bw, swap);
+//                    bw.newLine();
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                }
+                }
+            }
+            
+//            try{
+//            if (bw!=null)
+//             bw.close();
+//            if(fw!=null)
+//                fw.close();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
+            
+            return imgscram;
+    }
+    
+    private void writeMatrix(BufferedWriter bw, matrix a){
+        try{
+            int r = a.getRow();
+            int c = a.getCol();
+            
+            for(int row = 0; row<r; r++){
+                bw.write("[");
+                for(int col=0; col<c; c++){
+                    bw.write(a.getValue(row, col) + " ");
+                }
+                bw.write("]");    
+                bw.newLine();
+            }
+                
         } catch (Exception e){
             e.printStackTrace();
         }
-            
-            return imgscram;
     }
     
     /*

@@ -33,7 +33,7 @@ public class matrixop {
         return this;
     }
     
-    public matrix multiplyMatrix(matrix a, matrix b){
+    public matrix multiplyMatrix(int mod){
         matrix c = new matrix();
         int elem = 0;
         if (a.getCol() != b.getRow()){
@@ -57,7 +57,9 @@ public class matrixop {
                         
                         elem += (a.getValue(x, i) * b.getValue(i, y));
                     }
+                if(elem<=100)
                     c.setValue(x, y, elem);
+                else c.setValue(x, y, elem%mod);
 
 
                 }//end col count for product matrix
