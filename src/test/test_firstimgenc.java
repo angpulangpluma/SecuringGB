@@ -33,6 +33,8 @@ public class test_firstimgenc {
         JFrame imgenc = new JFrame("Image encryption module");
         img_proc img = new img_proc();
         File f = null;
+        BufferedImage result;
+        
         int returnValue = fileChooser.showOpenDialog(null);
         JOptionPane.showMessageDialog(imgenc, "Please choose an image file to open.");
         fileChooser.show();
@@ -48,28 +50,41 @@ public class test_firstimgenc {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write("---------");
         bw.newLine();
-        bw.write("encrypting file");  
+//        bw.write("encrypting file through first algorithm");  
+//        bw.newLine();
+//        bw.write("file to encrypt: " + f.getAbsoluteFile());
+//        bw.newLine();
+//        startTime = System.currentTimeMillis();
+//        result = img.firstPixScram();
+//        endTime = System.currentTimeMillis();
+//        encryptTime = endTime - startTime;
+//        bw.write("encryption time: " + encryptTime);
+//        bw.newLine();
+//        System.out.println("Pixels transfer complete!");
+//        createNewImage(returnFileName(f)+"_enc."+returnFileExt(f), result);
+//        bw.write("file to decrypt: " + returnFileName(f)+"_enc."+returnFileExt(f));
+//        bw.newLine();
+//        startTime = System.currentTimeMillis();
+//        result = img.firstPixUnscram();
+//        endTime = System.currentTimeMillis();
+//        encryptTime = endTime - startTime;
+//        bw.write("decryption time: " + encryptTime);
+//        bw.newLine();
+//        System.out.println("Pixels transfer complete!");
+//        createNewImage(returnFileName(f)+"_dec."+returnFileExt(f), result);
+        
+        bw.write("encrypting file through second algorithm");  
         bw.newLine();
         bw.write("file to encrypt: " + f.getAbsoluteFile());
         bw.newLine();
         startTime = System.currentTimeMillis();
-        BufferedImage result = img.firstPixScram();
+        result = img.secondPixScram();
         endTime = System.currentTimeMillis();
         encryptTime = endTime - startTime;
         bw.write("encryption time: " + encryptTime);
         bw.newLine();
         System.out.println("Pixels transfer complete!");
         createNewImage(returnFileName(f)+"_enc."+returnFileExt(f), result);
-        bw.write("file to decrypt: " + returnFileName(f)+"_enc."+returnFileExt(f));
-        bw.newLine();
-        startTime = System.currentTimeMillis();
-        result = img.firstPixUnscram();
-        endTime = System.currentTimeMillis();
-        encryptTime = endTime - startTime;
-        bw.write("decryption time: " + encryptTime);
-        bw.newLine();
-        System.out.println("Pixels transfer complete!");
-        createNewImage(returnFileName(f)+"_dec."+returnFileExt(f), result);
         if (bw!=null)
             bw.close();
         if(fw!=null)

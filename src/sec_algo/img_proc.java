@@ -123,7 +123,6 @@ public class img_proc {
     public BufferedImage firstPixScram(){
 //        BufferedWriter bw = new BufferedWriter(fw);
         BufferedImage imgscram = null;
-        int[][] pix = getImageInPixels();
         try{
             Image temp = Toolkit.getDefaultToolkit().createImage(f.getAbsoluteFile().toString());
             PixelGrabber pg = new PixelGrabber(temp, 0, 0, -1, -1, true);
@@ -153,7 +152,6 @@ public class img_proc {
             //encrypt img here
             int w = getImageWidth();
             int h = getImageHeight();
-            int[][] imgpix = getImageInPixels();
             matrix selpix = new matrix();
             selpix.setRow(2);
             selpix.setCol(1);
@@ -193,7 +191,18 @@ public class img_proc {
 //                        e.printStackTrace();
 //                    }
                     matrix swap = mop.multiplyMatrix(w);
+                    if(swap.getValue(0,0)>=w)
+                        swap.setValue(0, 0, swap.getValue(0,0)%w);
+                    if(swap.getValue(1,0)>=w)
+                        swap.setValue(1, 0, swap.getValue(1,0)%w);
                     swap.displayMatrix();
+                    
+//                    if(elem<100 && elem>=0)
+//                    c.setValue(x, y, elem);
+//                else if (elem<0)
+//                    c.setValue(x, y, elem*-1);
+//                else if (elem>100)
+//                    c.setValue(x, y, elem%mod);
                     
                     a = getAOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
                     r = getROfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
@@ -262,7 +271,6 @@ public class img_proc {
     */
     public BufferedImage secondPixScram(){
         BufferedImage imgscram = null;
-        int[][] pix = getImageInPixels();
         try{
             Image temp = Toolkit.getDefaultToolkit().createImage(f.getAbsoluteFile().toString());
             PixelGrabber pg = new PixelGrabber(temp, 0, 0, -1, -1, true);
@@ -294,6 +302,80 @@ public class img_proc {
             
             //encrypt img here
             //don't forget to do mod 256 after each pixel processed; limited values 0 to 255
+            int w = getImageWidth();
+            int h = getImageHeight();
+            matrix selpix = new matrix();
+            selpix.setRow(3);
+            selpix.setCol(1);
+            selpix.defineMatrix();
+            matrixop mop = new matrixop();
+            int a, r, g, b;
+            
+//            try{
+//                bw.write("First image encryption algorithm");
+//                bw.newLine();
+//                bw.write("a1:");
+//                bw.newLine();
+//                writeMatrix(bw, a1);
+//                bw.newLine();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
+            
+            for(int row=0; row<w; row++){
+                for(int col=0; col<h; col++){
+                    selpix.setValue(0, 0, getROfImagePixel(row,col));
+                    selpix.setValue(1, 0, getGOfImagePixel(row,col));
+                    selpix.setValue(2, 0, getBOfImagePixel(row,col));
+                    mop.setFirstMatrix(a2);
+                    mop.setSecondMatrix(selpix);
+//                    try{
+//                        bw.write("step " + w);
+//                        bw.write("before encryption:");
+//                        bw.newLine();
+//                        bw.write("a1:");
+//                        bw.newLine();
+//                        writeMatrix(bw, a1);
+//                        bw.write("selected pixel");
+//                        bw.newLine();
+//                        writeMatrix(bw, selpix);
+//                        bw.newLine();
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+                    matrix swap = mop.multiplyMatrix(w);
+                    if(swap.getValue(0,0)>255)
+                        swap.setValue(0, 0, swap.getValue(0,0)%255);
+                    if(swap.getValue(1,0)>255)
+                        swap.setValue(0, 0, swap.getValue(1,0)%255);
+                    if(swap.getValue(2,0)>255)
+                        swap.setValue(0, 0, swap.getValue(2,0)%255);
+                    swap.displayMatrix();
+                    
+//                    a = getAOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+//                    r = getROfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+//                    g = getGOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+//                    b = getBOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+//                    int p1 = (a<<24) | (r<<16) | (g<<8) | b;
+//                    a = getAOfImagePixel(row,col);
+//                    r = getROfImagePixel(row,col);
+//                    g = getGOfImagePixel(row,col);
+//                    b = getBOfImagePixel(row,col);
+//                    int p2 = (a<<24) | (r<<16) | (g<<8) | b;
+//                    imgscram.setRGB(row, col, p1);
+//                    imgscram.setRGB(swap.getValue(0,0), swap.getValue(1,0), p2);
+                   
+                }
+            }
+            
+//            try{
+//            if (bw!=null)
+//             bw.close();
+//            if(fw!=null)
+//                fw.close();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
                 
         } catch (Exception e){
             e.printStackTrace();
@@ -320,28 +402,29 @@ public class img_proc {
             imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
             
             //setting basis matrix
-            matrix a1 = new matrix();
-            a1.setRow(2);
-            a1.setCol(2);
-            a1.defineMatrix();
-            
-            a1.setValue(0, 0, 2);
-            a1.setValue(0, 1, -1);
-            a1.setValue(1, 0, -1);
-            a1.setValue(1, 1, 1);
-            
-            System.out.println("\n Basis matrix for first decryption algorithm:");
-            a1.displayMatrix();
+//            matrix a1 = new matrix();
+//            a1.setRow(2);
+//            a1.setCol(2);
+//            a1.defineMatrix();
+//            
+//            a1.setValue(0, 0, 2);
+//            a1.setValue(0, 1, -1);
+//            a1.setValue(1, 0, -1);
+//            a1.setValue(1, 1, 1);
+//            
+//            System.out.println("\n Basis matrix for first decryption algorithm:");
+//            a1.displayMatrix();
                 
             //encrypt img here
             int w = getImageWidth();
             int h = getImageHeight();
-            int[][] imgpix = getImageInPixels();
-            matrix selpix = new matrix();
-            selpix.setRow(2);
-            selpix.setCol(1);
-            selpix.defineMatrix();
-            matrixop mop = new matrixop();
+            int x, y;
+//            int[][] imgpix = getImageInPixels();
+//            matrix selpix = new matrix();
+//            selpix.setRow(2);
+//            selpix.setCol(1);
+//            selpix.defineMatrix();
+//            matrixop mop = new matrixop();
             int a, r, g, b;
             
 //            try{
@@ -357,10 +440,29 @@ public class img_proc {
             
             for(int row=0; row<w; row++){
                 for(int col=0; col<h; col++){
-                    selpix.setValue(0, 0, col);
-                    selpix.setValue(1, 0, row);
-                    mop.setFirstMatrix(a1);
-                    mop.setSecondMatrix(selpix);
+                    x = ((2*col)-row) % w;
+                    if (x<0)
+                        x *= -1;
+                    y = (row-col) % w;
+                    if (y<0)
+                        y *= -1;
+                    
+                    a = getAOfImagePixel(x,y);
+                    r = getROfImagePixel(x,y);
+                    g = getGOfImagePixel(x,y);
+                    b = getBOfImagePixel(x,y);
+                    int p1 = (a<<24) | (r<<16) | (g<<8) | b;
+                    a = getAOfImagePixel(row,col);
+                    r = getROfImagePixel(row,col);
+                    g = getGOfImagePixel(row,col);
+                    b = getBOfImagePixel(row,col);
+                    int p2 = (a<<24) | (r<<16) | (g<<8) | b;
+                    imgscram.setRGB(row, col, p1);
+                    imgscram.setRGB(x, y, p2);
+//                    selpix.setValue(0, 0, col);
+//                    selpix.setValue(1, 0, row);
+//                    mop.setFirstMatrix(a1);
+//                    mop.setSecondMatrix(selpix);
 //                    try{
 //                        bw.write("step " + w);
 //                        bw.write("before encryption:");
@@ -375,21 +477,21 @@ public class img_proc {
 //                    } catch (Exception e){
 //                        e.printStackTrace();
 //                    }
-                    matrix swap = mop.multiplyMatrix(w);
-                    swap.displayMatrix();
-                    
-                    a = getAOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
-                    r = getROfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
-                    g = getGOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
-                    b = getBOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
-                    int p1 = (a<<24) | (r<<16) | (g<<8) | b;
-                    a = getAOfImagePixel(row,col);
-                    r = getROfImagePixel(row,col);
-                    g = getGOfImagePixel(row,col);
-                    b = getBOfImagePixel(row,col);
-                    int p2 = (a<<24) | (r<<16) | (g<<8) | b;
-                    imgscram.setRGB(row, col, p1);
-                    imgscram.setRGB(swap.getValue(0,0), swap.getValue(1,0), p2);
+//                    matrix swap = mop.multiplyMatrix(w);
+//                    swap.displayMatrix();
+//                    
+//                    a = getAOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+//                    r = getROfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+//                    g = getGOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+//                    b = getBOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+//                    int p1 = (a<<24) | (r<<16) | (g<<8) | b;
+//                    a = getAOfImagePixel(row,col);
+//                    r = getROfImagePixel(row,col);
+//                    g = getGOfImagePixel(row,col);
+//                    b = getBOfImagePixel(row,col);
+//                    int p2 = (a<<24) | (r<<16) | (g<<8) | b;
+//                    imgscram.setRGB(row, col, p1);
+//                    imgscram.setRGB(swap.getValue(0,0), swap.getValue(1,0), p2);
                     
 //                    try{
 ////                        bw.write("step " + w);
@@ -442,23 +544,23 @@ public class img_proc {
             imgscram = new BufferedImage(RGB_OPAQUE, raster, false, null);
             
             //setting basis matrix
-            matrix a2 = new matrix();
-            a2.setRow(3);
-            a2.setCol(3);
-            a2.defineMatrix();
-            
-            a2.setValue(0, 0, 2);
-            a2.setValue(0, 1, -1);
-            a2.setValue(0, 2, 0);
-            a2.setValue(1, 0, -1);
-            a2.setValue(1, 1, 2);
-            a2.setValue(1, 2, -1);
-            a2.setValue(2, 0, 0);
-            a2.setValue(2, 1, -1);
-            a2.setValue(2, 2, 1);
-            
-            System.out.println("\n Basis matrix for second encryption algorithm:");
-            a2.displayMatrix();
+//            matrix a2 = new matrix();
+//            a2.setRow(3);
+//            a2.setCol(3);
+//            a2.defineMatrix();
+//            
+//            a2.setValue(0, 0, 2);
+//            a2.setValue(0, 1, -1);
+//            a2.setValue(0, 2, 0);
+//            a2.setValue(1, 0, -1);
+//            a2.setValue(1, 1, 2);
+//            a2.setValue(1, 2, -1);
+//            a2.setValue(2, 0, 0);
+//            a2.setValue(2, 1, -1);
+//            a2.setValue(2, 2, 1);
+//            
+//            System.out.println("\n Basis matrix for second encryption algorithm:");
+//            a2.displayMatrix();
             
             //encrypt img here
             //don't forget to do mod 256 after each pixel processed; limited values 0 to 255
