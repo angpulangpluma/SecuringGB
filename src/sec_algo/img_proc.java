@@ -120,7 +120,7 @@ public class img_proc {
     based on first encryption algorithm from "Research on Colour Image
         Efficiency" by Jing-Yu Peng
     */
-    public BufferedImage firstPixScram(FileWriter fw){
+    public BufferedImage firstPixScram(){
 //        BufferedWriter bw = new BufferedWriter(fw);
         BufferedImage imgscram = null;
         int[][] pix = getImageInPixels();
@@ -200,12 +200,12 @@ public class img_proc {
                     g = getGOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
                     b = getBOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
                     int p1 = (a<<24) | (r<<16) | (g<<8) | b;
-                    a = getAOfImagePixel(w,h);
-                    r = getROfImagePixel(w,h);
-                    g = getGOfImagePixel(w,h);
-                    b = getBOfImagePixel(w,h);
+                    a = getAOfImagePixel(row,col);
+                    r = getROfImagePixel(row,col);
+                    g = getGOfImagePixel(row,col);
+                    b = getBOfImagePixel(row,col);
                     int p2 = (a<<24) | (r<<16) | (g<<8) | b;
-                    imgscram.setRGB(w, h, p1);
+                    imgscram.setRGB(row, col, p1);
                     imgscram.setRGB(swap.getValue(0,0), swap.getValue(1,0), p2);
                     
 //                    try{
@@ -334,6 +334,88 @@ public class img_proc {
             a1.displayMatrix();
                 
             //encrypt img here
+            int w = getImageWidth();
+            int h = getImageHeight();
+            int[][] imgpix = getImageInPixels();
+            matrix selpix = new matrix();
+            selpix.setRow(2);
+            selpix.setCol(1);
+            selpix.defineMatrix();
+            matrixop mop = new matrixop();
+            int a, r, g, b;
+            
+//            try{
+//                bw.write("First image encryption algorithm");
+//                bw.newLine();
+//                bw.write("a1:");
+//                bw.newLine();
+//                writeMatrix(bw, a1);
+//                bw.newLine();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
+            
+            for(int row=0; row<w; row++){
+                for(int col=0; col<h; col++){
+                    selpix.setValue(0, 0, col);
+                    selpix.setValue(1, 0, row);
+                    mop.setFirstMatrix(a1);
+                    mop.setSecondMatrix(selpix);
+//                    try{
+//                        bw.write("step " + w);
+//                        bw.write("before encryption:");
+//                        bw.newLine();
+//                        bw.write("a1:");
+//                        bw.newLine();
+//                        writeMatrix(bw, a1);
+//                        bw.write("selected pixel");
+//                        bw.newLine();
+//                        writeMatrix(bw, selpix);
+//                        bw.newLine();
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+                    matrix swap = mop.multiplyMatrix(w);
+                    swap.displayMatrix();
+                    
+                    a = getAOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+                    r = getROfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+                    g = getGOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+                    b = getBOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+                    int p1 = (a<<24) | (r<<16) | (g<<8) | b;
+                    a = getAOfImagePixel(row,col);
+                    r = getROfImagePixel(row,col);
+                    g = getGOfImagePixel(row,col);
+                    b = getBOfImagePixel(row,col);
+                    int p2 = (a<<24) | (r<<16) | (g<<8) | b;
+                    imgscram.setRGB(row, col, p1);
+                    imgscram.setRGB(swap.getValue(0,0), swap.getValue(1,0), p2);
+                    
+//                    try{
+////                        bw.write("step " + w);
+//                    bw.write("after encryption:");
+//                    bw.newLine();
+//                    bw.write("a1:");
+//                    bw.newLine();
+//                    writeMatrix(bw, a1);
+//                    bw.write("swap");
+//                    bw.newLine();
+//                    writeMatrix(bw, swap);
+//                    bw.newLine();
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                }
+                }
+            }
+            
+//            try{
+//            if (bw!=null)
+//             bw.close();
+//            if(fw!=null)
+//                fw.close();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
             
         } catch (Exception e){
             e.printStackTrace();

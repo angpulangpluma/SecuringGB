@@ -57,9 +57,12 @@ public class matrixop {
                         
                         elem += (a.getValue(x, i) * b.getValue(i, y));
                     }
-                if(elem<=100)
+                if(elem<100 && elem>=0)
                     c.setValue(x, y, elem);
-                else c.setValue(x, y, elem%mod);
+                else if (elem<0)
+                    c.setValue(x, y, elem*-1);
+                else if (elem>100)
+                    c.setValue(x, y, elem%mod);
 
 
                 }//end col count for product matrix

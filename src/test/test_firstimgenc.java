@@ -50,12 +50,26 @@ public class test_firstimgenc {
         bw.newLine();
         bw.write("encrypting file");  
         bw.newLine();
+        bw.write("file to encrypt: " + f.getAbsoluteFile());
+        bw.newLine();
         startTime = System.currentTimeMillis();
-        img.firstPixScram(fw);
+        BufferedImage result = img.firstPixScram();
         endTime = System.currentTimeMillis();
         encryptTime = endTime - startTime;
         bw.write("encryption time: " + encryptTime);
         bw.newLine();
+        System.out.println("Pixels transfer complete!");
+        createNewImage(returnFileName(f)+"_enc."+returnFileExt(f), result);
+        bw.write("file to decrypt: " + returnFileName(f)+"_enc."+returnFileExt(f));
+        bw.newLine();
+        startTime = System.currentTimeMillis();
+        result = img.firstPixUnscram();
+        endTime = System.currentTimeMillis();
+        encryptTime = endTime - startTime;
+        bw.write("decryption time: " + encryptTime);
+        bw.newLine();
+        System.out.println("Pixels transfer complete!");
+        createNewImage(returnFileName(f)+"_dec."+returnFileExt(f), result);
         if (bw!=null)
             bw.close();
         if(fw!=null)
@@ -104,7 +118,6 @@ public class test_firstimgenc {
         
         
 //        
-//        System.out.println("Pixels transfer complete!");
 //        JOptionPane.showMessageDialog(imgenc, "Please enter filename to save file as");
 //        returnValue = fileChooser.showOpenDialog(null);
 //        fileChooser.show();
@@ -114,6 +127,7 @@ public class test_firstimgenc {
 //            img.createNewImage(f.getName());
 ////            System.out.println("Saved file: "+ f.getAbsoluteFile());
 //        }
+        
     }
     
     private static String returnFileExt(File file){
@@ -131,5 +145,14 @@ public class test_firstimgenc {
             filename = file.getName().substring(0, i);
         return filename;
     }
-
+    
+    private static void createNewImage(String fileloc, BufferedImage image){
+        try{
+            File output = new File(fileloc);
+            ImageIO.write(image, "jpg", output);
+            System.out.println("Writing image successful!");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
