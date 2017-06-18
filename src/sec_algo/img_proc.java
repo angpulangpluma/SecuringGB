@@ -195,6 +195,19 @@ public class img_proc {
                     matrix swap = mop.multiplyMatrix(w);
                     swap.displayMatrix();
                     
+                    a = getAOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+                    r = getROfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+                    g = getGOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+                    b = getBOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
+                    int p1 = (a<<24) | (r<<16) | (g<<8) | b;
+                    a = getAOfImagePixel(w,h);
+                    r = getROfImagePixel(w,h);
+                    g = getGOfImagePixel(w,h);
+                    b = getBOfImagePixel(w,h);
+                    int p2 = (a<<24) | (r<<16) | (g<<8) | b;
+                    imgscram.setRGB(w, h, p1);
+                    imgscram.setRGB(swap.getValue(0,0), swap.getValue(1,0), p2);
+                    
 //                    try{
 ////                        bw.write("step " + w);
 //                    bw.write("after encryption:");

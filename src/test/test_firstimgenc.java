@@ -27,6 +27,7 @@ public class test_firstimgenc {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        long startTime, endTime, encryptTime;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         JFrame imgenc = new JFrame("Image encryption module");
@@ -49,7 +50,12 @@ public class test_firstimgenc {
         bw.newLine();
         bw.write("encrypting file");  
         bw.newLine();
+        startTime = System.currentTimeMillis();
         img.firstPixScram(fw);
+        endTime = System.currentTimeMillis();
+        encryptTime = endTime - startTime;
+        bw.write("encryption time: " + encryptTime);
+        bw.newLine();
         if (bw!=null)
             bw.close();
         if(fw!=null)
