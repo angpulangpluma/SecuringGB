@@ -78,10 +78,10 @@ public class test_img {
 //            System.out.println("Saved file: "+ f.getAbsoluteFile());
         }
         
-        img.firstPixScram();
-        img.secondPixScram();
-        img.firstPixUnscram();
-        img.secondPixUnscram();
+//        img.firstPixScram();
+//        img.secondPixScram();
+//        img.firstPixUnscram();
+//        img.secondPixUnscram();
     }
 }
 
