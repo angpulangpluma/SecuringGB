@@ -352,6 +352,13 @@ public class img_proc {
                         swap.setValue(0, 0, swap.getValue(2,0)%255);
                     swap.displayMatrix();
                     
+                    a = getAOfImagePixel(row,col);
+                    r = swap.getValue(0,0)>>16 & 0xff;
+                    g = swap.getValue(1,0)>>8 & 0xff;
+                    b = swap.getValue(2,0) & 0xff;
+                    int p1 = (a<<24) | (r<<16) | (g<<8) | b ;
+                    imgscram.setRGB(row, col, p1);
+                    
 //                    a = getAOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
 //                    r = getROfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
 //                    g = getGOfImagePixel(swap.getValue(0, 0), swap.getValue(1,0));
