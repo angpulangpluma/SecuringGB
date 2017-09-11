@@ -50,8 +50,6 @@ public class test_module extends javax.swing.JFrame {
 
         jLabel1.setText("Enter text:");
 
-        textfieldinput.setText("jTextField1");
-
         textencbtn.setText("AES Enc!");
         textencbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -68,7 +66,7 @@ public class test_module extends javax.swing.JFrame {
 
         jLabel2.setText("Selected file:");
 
-        selectfilebtn.setText("jButton3");
+        selectfilebtn.setText("Select File");
 
         textfieldfile.setText("Click adjacent button to select a file ->");
 
@@ -79,7 +77,6 @@ public class test_module extends javax.swing.JFrame {
         jLabel3.setText("Text output:");
 
         textfieldoutput.setEditable(false);
-        textfieldoutput.setText("jTextField3");
 
         hashtextbtn.setText("Hash!");
         hashtextbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -111,27 +108,34 @@ public class test_module extends javax.swing.JFrame {
                                         .addComponent(textfieldfile, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(selectfilebtn))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(textfieldinput, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(hashtextbtn))
-                                        .addComponent(textfieldoutput))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(textfieldinput, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                                                .addGap(67, 67, 67))
+                                            .addComponent(textfieldoutput))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(hashtextbtn))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(215, 215, 215)
                                 .addComponent(title)))
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(fileencbtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(filedecbtn))
+                                .addGap(37, 37, 37)
+                                .addComponent(texttime))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(textencbtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textdecbtn))
-                            .addComponent(texttime))))
-                .addGap(38, 38, 38))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(fileencbtn)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(filedecbtn))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(textencbtn)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(textdecbtn)))))
+                        .addGap(35, 35, 35)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,10 +146,9 @@ public class test_module extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(textfieldinput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(hashtextbtn)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(textencbtn)
-                        .addComponent(textdecbtn)))
+                    .addComponent(textencbtn)
+                    .addComponent(textdecbtn)
+                    .addComponent(hashtextbtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
