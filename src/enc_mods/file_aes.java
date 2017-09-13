@@ -32,6 +32,10 @@ public class file_aes {
         filealgo.setKey();
     }
     
+    public file_aes(aes enc){
+        this.filealgo = enc;
+    }
+    
     /*
     Implementation for encryptFile() from www.macs.hw.ac.uk/~ml355/lore/FileEncryption.java
     */
