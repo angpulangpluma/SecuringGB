@@ -5,6 +5,13 @@
  */
 package enc_mods_test;
 
+import enc_mods.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author YING LOPEZ
@@ -14,7 +21,20 @@ public class test_module extends javax.swing.JFrame {
     /**
      * Creates new form test_module
      */
+    
+    private time_algo tester;
+    private aes encmodorig;
+    private text_aes encmodtext;
+    private file_aes encmodfile;
+    
+    private File selfile;
+    
     public test_module() {
+        encmodorig = new aes();
+        encmodtext = new text_aes(encmodorig);
+        encmodfile = new file_aes(encmodorig);
+        tester = null;
+        selfile = null;
         initComponents();
     }
 
@@ -67,12 +87,28 @@ public class test_module extends javax.swing.JFrame {
         jLabel2.setText("Selected file:");
 
         selectfilebtn.setText("Select File");
+        selectfilebtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectfilebtnActionPerformed(evt);
+            }
+        });
 
+        textfieldfile.setEditable(false);
         textfieldfile.setText("Click adjacent button to select a file ->");
 
         fileencbtn.setText("AES Enc!");
+        fileencbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileencbtnActionPerformed(evt);
+            }
+        });
 
         filedecbtn.setText("AES Dec!");
+        filedecbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filedecbtnActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Text output:");
 
@@ -171,50 +207,143 @@ public class test_module extends javax.swing.JFrame {
 
     private void hashtextbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hashtextbtnActionPerformed
         // TODO add your handling code here:
+        if(textfieldinput.getText()==""){
+            JOptionPane.showMessageDialog(this, "Please enter text as input.");
+        } else {
+            tester = new time_algo(encmodtext);
+            try{
+            FileWriter fw = new FileWriter("test_log.txt", true);
+            tester.setFileLog(fw);
+            textfieldoutput.setText(encmodtext.getHashedString(textfieldinput.getText()));
+            tester.writeEncTime(22, null, textfieldinput.getText());
+            tester.finishTest();
+            tester = null;
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_hashtextbtnActionPerformed
 
     private void textencbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textencbtnActionPerformed
         // TODO add your handling code here:
+        if(textfieldinput.getText()==""){
+            JOptionPane.showMessageDialog(this, "Please enter text as input.");
+        } else {
+            tester = new time_algo(encmodtext);
+            try{
+            FileWriter fw = new FileWriter("test_log.txt", true);
+            tester.setFileLog(fw);
+            textfieldoutput.setText(encmodtext.getEncString(textfieldinput.getText()));
+            tester.writeEncTime(21, null, textfieldinput.getText());
+            tester.finishTest();
+            tester = null;
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_textencbtnActionPerformed
 
     private void textdecbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textdecbtnActionPerformed
         // TODO add your handling code here:
+        if(textfieldinput.getText()==""){
+            JOptionPane.showMessageDialog(this, "Please enter text as input.");
+        } else {
+            tester = new time_algo(encmodtext);
+            try{
+            FileWriter fw = new FileWriter("test_log.txt", true);
+            tester.setFileLog(fw);
+            textfieldoutput.setText(encmodtext.getDecString(textfieldinput.getText()));
+            tester.writeDecTime(2, null, textfieldinput.getText());
+            tester.finishTest();
+            tester = null;
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_textdecbtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(test_module.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(test_module.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(test_module.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(test_module.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void selectfilebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectfilebtnActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        int rVal = fileChooser.showOpenDialog(null);
+        if (rVal == JFileChooser.APPROVE_OPTION){
+            selfile = fileChooser.getSelectedFile();
+            textfieldfile.setText(selfile.getName());
         }
-        //</editor-fold>
+    }//GEN-LAST:event_selectfilebtnActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new test_module().setVisible(true);
+    private void fileencbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileencbtnActionPerformed
+        // TODO add your handling code here:
+        if(selfile==null){
+            JOptionPane.showMessageDialog(this, "Please select a file as input.");
+        } else {
+            tester = new time_algo(encmodfile);
+            try{
+            FileWriter fw = new FileWriter("test_log.txt", true);
+            tester.setFileLog(fw);
+            tester.writeEncTime(3, selfile, null);
+            tester.finishTest();
+            tester = null;
+            selfile = null;
+            } catch (Exception ex){
+                ex.printStackTrace();
             }
-        });
-    }
+        }
+    }//GEN-LAST:event_fileencbtnActionPerformed
+
+    private void filedecbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filedecbtnActionPerformed
+        // TODO add your handling code here:
+        if(selfile==null){
+            JOptionPane.showMessageDialog(this, "Please select a file as input.");
+        } else {
+            tester = new time_algo(encmodfile);
+            try{
+            FileWriter fw = new FileWriter("test_log.txt", true);
+            tester.setFileLog(fw);
+            tester.writeDecTime(3, selfile, null);
+            tester.finishTest();
+            tester = null;
+            selfile = null;
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_filedecbtnActionPerformed
+
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(test_module.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(test_module.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(test_module.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(test_module.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new test_module().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton filedecbtn;
