@@ -21,6 +21,10 @@ public class text_aes {
         textalgo.setKey();
     }
     
+    public text_aes(aes enc){
+        this.textalgo = enc;
+    }
+    
     public String getEncString(String str){
         return textalgo.getEncryptedString(str);
     }
