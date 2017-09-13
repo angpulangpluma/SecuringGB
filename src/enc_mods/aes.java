@@ -76,12 +76,16 @@ public class aes {
     
     public String getEncryptedString(String str){
         String encrypted = "";
-        try{
-            cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, secretkey);
-            encrypted = Base64.encodeBase64String(cipher.doFinal(str.getBytes("UTF-8")));
-        }catch(Exception e){
-            e.printStackTrace();
+        if (secretkey==null){
+            System.out.println("no key");
+        } else{
+            try{
+                cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+                cipher.init(Cipher.ENCRYPT_MODE, secretkey);
+                encrypted = Base64.encodeBase64String(cipher.doFinal(str.getBytes("UTF-8")));
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
         return encrypted;
     }

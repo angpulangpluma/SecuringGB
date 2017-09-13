@@ -33,6 +33,7 @@ public class test_module extends javax.swing.JFrame {
         encmodorig = new aes();
         encmodtext = new text_aes(encmodorig);
         encmodfile = new file_aes(encmodorig);
+        System.out.println("key as: " + encmodorig.getKey());
         tester = null;
         selfile = null;
         initComponents();
