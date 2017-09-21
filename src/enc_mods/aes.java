@@ -47,7 +47,7 @@ public class aes {
         KeyGenerator kgen = KeyGenerator.getInstance("AES");
         kgen.init(AES_Key_Size);
         SecretKey aeskey = kgen.generateKey();
-        byte[] key = aeskey.getEncoded();
+        key = aeskey.getEncoded();
         secretkey = new SecretKeySpec(key, "AES");
         } catch (Exception e){
             e.printStackTrace();

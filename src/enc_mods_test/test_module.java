@@ -31,6 +31,7 @@ public class test_module extends javax.swing.JFrame {
     
     public test_module() {
         encmodorig = new aes();
+        encmodorig.setKey();
         encmodtext = new text_aes(encmodorig);
         encmodfile = new file_aes(encmodorig);
         System.out.println("key as: " + encmodorig.getKey());
