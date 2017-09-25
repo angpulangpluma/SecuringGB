@@ -7,14 +7,23 @@
 package dropbox;
 
 import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v1.DbxEntry;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.FolderMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.files.WriteMode;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import enc_mods.file_aes;
 import enc_mods.text_aes;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.Date;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -59,6 +68,56 @@ public class dbController {
     
     public DefaultListModel returnModel(){
         return this.model;
+    }
+    
+    public Metadata isFile(String item) throws Exception{
+        Metadata result = null;
+        result = client.files().getMetadata(item);
+        if (result instanceof FolderMetadata)
+            result = null;
+        return result;
+        //ask whether user wants to download the file
+        //if yes, download
+        //else view the file, check extension
+    }
+    
+    public boolean getFile(String filename) throws Exception{
+        boolean result = false;
+        FileOutputStream outputStream = new FileOutputStream("fromdb//" +
+                curFolder + "_" + filename);
+        try{
+            FileMetadata downloadedFile = client.files().downloadBuilder(curFolder + "/" 
+                    + filename).download(outputStream);
+        } finally{
+            outputStream.close();
+            result = true;
+        }
+        
+        return result;
+    }
+    
+    public boolean uploadFiles() throws Exception{
+        boolean result = false;
+        JFileChooser fileChooser = new JFileChooser();
+        PSFileChooser accessory = new PSFileChooser(fileChooser);
+        fileChooser.setAccessory(accessory);
+        int rVal = fileChooser.showOpenDialog(fileChooser);
+        if (rVal == JFileChooser.APPROVE_OPTION){
+            InputStream in = null;
+            File[] selfiles = accessory.getAllSelectedFiles();
+            System.out.println("The following files have been uploaded:");
+            for(int i=0; i<selfiles.length; i++){
+                in = new FileInputStream(selfiles[i]);
+            //tip: if one wants to store in folder, put "/<folder name>/"
+                FileMetadata metadata = client.files().uploadBuilder("/" + selfiles[i].getName())
+                        .withMode(WriteMode.ADD)
+                        .withClientModified(new Date(selfiles[i].lastModified()))
+                        .uploadAndFinish(in);
+                System.out.println(selfiles[i].getName());
+            }
+            result = true;
+        }
+        return result;
     }
     
 //    private void knowFolders() throws Exception{

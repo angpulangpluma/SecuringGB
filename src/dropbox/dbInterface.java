@@ -11,8 +11,12 @@ import com.dropbox.core.v2.*;
 import com.dropbox.core.v2.files.FolderMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,7 +29,8 @@ public class dbInterface extends javax.swing.JFrame {
      */
     
     private dbController dbCnt = null;
-    private fileHealthInterface parent = null;
+    private final fileHealthInterface parent;
+    private final String folder;
     
     public dbInterface(String folderpath, fileHealthInterface fhiint) {
         
@@ -34,6 +39,8 @@ public class dbInterface extends javax.swing.JFrame {
         fileList.setModel(dbCnt.returnModel());
         
         parent = fhiint;
+        
+        folder = folderpath;
         
         initComponents();
         
@@ -130,19 +137,49 @@ public class dbInterface extends javax.swing.JFrame {
     private void fileListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileListMouseClicked
         // TODO add your handling code here:
         if (evt.getClickCount()==2){
-            //Metadata item = client.files().getMetadata(<insert list item here>);
-            //if (item instanceof FolderMetadata)
-            //refresh to list items inside that folder
-            //else if (item instance of FileMetadata)
-            //ask whether user wants to download the file
-            //if yes, download
-            //else view the file, check extension
-            //else .... find out how to traverse folders
+            Metadata item = null;
+            try{
+            item = dbCnt.isFile((String)fileList.getSelectedValue());
+            } catch(Exception e){
+                e.printStackTrace();
+                System.exit(1);
+            }
+            
+            if (item!=null){ //it is file
+                int choice = JOptionPane.showConfirmDialog(null, "Would you like to download "
+                    + (String)fileList.getSelectedValue() + "?");
+                if (choice == JOptionPane.YES_OPTION){
+                    try{
+                        
+                        boolean check = dbCnt.getFile((String)fileList.getSelectedValue());
+                        if (check) {
+                            Desktop desktop = Desktop.getDesktop();
+                            desktop.open(new File("C:\\Users\\YING LOPEZ\\Documents\\thesis\\SecuringGB\\fromdb\\" 
+                                    + (String)fileList.getSelectedValue()));
+                        }
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                }
+            }
+
         }
     }//GEN-LAST:event_fileListMouseClicked
 
     private void uploadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadBtnActionPerformed
         // TODO add your handling code here:
+        try{           
+            boolean check = dbCnt.uploadFiles();
+            if (check) {
+                System.out.println("uploading successful");
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }
         //insert code from dbSnippet abt uploading files here
         //add option to save in folder
     }//GEN-LAST:event_uploadBtnActionPerformed
