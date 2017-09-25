@@ -24,81 +24,16 @@ public class dbInterface extends javax.swing.JFrame {
      * Creates new form dbInterface
      */
     
-    private static final String ACCESS_TOKEN = "I9h5pIu_C2AAAAAAAAAAX-7E5iZmUqhT3n7Jo8MQ7M3c2fyzV6tyMQsdmecbwAoO";
-    private DbxRequestConfig config = null;
-    private DbxClientV2 client = null;
-    private DefaultListModel model = null;
-    private String curFolder = null;
-    private ArrayList<FolderMetadata> folders = null;
+    private dbController dbCnt = null;
     
-    public dbInterface() {
-        config = new DbxRequestConfig("DrpBxWithEncryption", "en_US");
-        client = new DbxClientV2(config, ACCESS_TOKEN);
+    public dbInterface(String folderpath) {
         
-        model = new DefaultListModel();
-        fileList.setModel(model);
+        dbCnt = new dbController("I9h5pIu_C2AAAAAAAAAAX-7E5iZmUqhT3n7Jo8MQ7M3c2fyzV6tyMQsdmecbwAoO", folderpath);
         
-        curFolder = "";
-        folders = new ArrayList<FolderMetadata>();
+        fileList.setModel(dbCnt.returnModel());
+        
         initComponents();
-        try{
-        refreshFiles(curFolder);
-        knowFolders();
-        } catch (Exception e){
-            e.printStackTrace();
-           System.exit(1);
-        }
-    }
-    
-    private void knowFolders() throws Exception{
-        boolean isFolder = false;
-        ArrayList<Integer> folderindices = new ArrayList<Integer>();
-        int fi = 0;
-        int cnt = 0;
-        ListFolderResult result = client.files().listFolder("");
-            while(true){
-                for(Metadata metadata : result.getEntries()){
-//                    System.out.println(metadata.getPathLower());
-                    if(metadata instanceof FolderMetadata){
-                        model.addElement(metadata.getName());
-                        folders.add((FolderMetadata)metadata);
-                        cnt++;
-                        isFolder = true;
-                    }
-                }
-                
-                if (!result.getHasMore() && isFolder){
-                    
-                    result = client.files().listFolder(folders.get(folderindices.get(fi)).getName());
-                }
-
-                else if (!result.getHasMore() && !isFolder)
-                    break;
-            }
-    }
-    
-    //note: when displaying, also include a 'Go Back to Source Folder'
-    //   when traversing inside folders
-    private void refreshFiles(String folderPath) throws Exception{
-        model.clear();
-        if (folderPath != ""){
-            model.addElement("Go Back Up");
-        }
         
-        //list files in that folder        
-        ListFolderResult result = client.files().listFolder(folderPath);
-            while(true){
-                for(Metadata metadata : result.getEntries()){
-//                    System.out.println(metadata.getPathLower());
-                    model.addElement(metadata.getName());
-                }
-
-                if (!result.getHasMore())
-                    break;
-            }
-        
-        curFolder = folderPath;
-
     }
 
     /**

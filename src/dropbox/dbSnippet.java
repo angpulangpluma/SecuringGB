@@ -11,7 +11,6 @@ import com.dropbox.core.v2.files.*;
 import com.dropbox.core.v2.users.*;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import com.fasterxml.jackson.core.JsonToken.*;
 import java.io.File;
 import java.util.Date;
 import javax.swing.JFileChooser;
