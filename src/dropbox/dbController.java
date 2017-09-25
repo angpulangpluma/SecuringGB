@@ -13,6 +13,8 @@ import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import enc_mods.file_aes;
+import enc_mods.text_aes;
 
 /**
  *
@@ -25,6 +27,8 @@ public class dbController {
     private DbxClientV2 client = null;
     private DefaultListModel model = null;
     private String curFolder = null;
+    private file_aes filecrypt = null;
+    private text_aes textcrypt = null;
 //    private ArrayList<FolderMetadata> folders = null;
     
     public dbController(String dropbox, String folderpath){
@@ -34,6 +38,8 @@ public class dbController {
         curFolder = folderpath;
 //        folders = new ArrayList<FolderMetadata>();
         
+        filecrypt = new file_aes();
+        textcrypt = new text_aes();
         try{
         refreshFiles(curFolder);
 //        knowFolders();
@@ -41,6 +47,14 @@ public class dbController {
             e.printStackTrace();
            System.exit(1);
         }
+    }
+    
+    public file_aes getFileCrypt(){
+        return filecrypt;
+    }
+    
+    public text_aes getTextCrypt(){
+        return textcrypt;
     }
     
     public DefaultListModel returnModel(){

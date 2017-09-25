@@ -25,15 +25,22 @@ public class dbInterface extends javax.swing.JFrame {
      */
     
     private dbController dbCnt = null;
+    private fileHealthInterface parent = null;
     
-    public dbInterface(String folderpath) {
+    public dbInterface(String folderpath, fileHealthInterface fhiint) {
         
         dbCnt = new dbController("I9h5pIu_C2AAAAAAAAAAX-7E5iZmUqhT3n7Jo8MQ7M3c2fyzV6tyMQsdmecbwAoO", folderpath);
         
         fileList.setModel(dbCnt.returnModel());
         
+        parent = fhiint;
+        
         initComponents();
         
+    }
+    
+    public dbController getController(){
+        return dbCnt;
     }
 
     /**
@@ -97,7 +104,7 @@ public class dbInterface extends javax.swing.JFrame {
                         .addComponent(accntTxtField))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(uploadBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                         .addComponent(exitBtn)))
                 .addContainerGap())
         );
@@ -142,7 +149,8 @@ public class dbInterface extends javax.swing.JFrame {
 
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
+        this.hide();
+        parent.show();
     }//GEN-LAST:event_exitBtnActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

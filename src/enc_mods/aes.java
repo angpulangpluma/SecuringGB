@@ -62,6 +62,11 @@ public class aes {
         return this.secretkey;
     }
     
+    public void saveKey(String fileloc){
+        File output = new File(fileloc);
+        //save key to file
+    }
+    
     public String getDecryptedString(String str){
         String decrypted = "";
         try{

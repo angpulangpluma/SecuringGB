@@ -34,6 +34,11 @@ public class file_aes {
     
     public file_aes(aes enc){
         this.filealgo = enc;
+        filealgo.setKey();
+    }
+    
+    public aes getCrypt(){
+        return filealgo;
     }
     
     /*
@@ -67,7 +72,7 @@ public class file_aes {
     /*
     Implementation for decryptFile() from www.macs.hw.ac.uk/~ml355/lore/FileEncryption.java
     */
-    
+      
     public void decryptFile(File file){
         File decrypted = new File("demo2de\\" + returnFileName(file)+"_decrypted."+returnFileExt(file));
         Cipher cp = filealgo.getCipher();
